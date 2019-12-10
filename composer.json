@@ -1,0 +1,17 @@
+{
+  "name": "wnull/userbars-warface-generator",
+  "description": "Simple and free library to generate userbars game Warface",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "WF\\": "src/WF"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-imagick": "*"
+  }
+}
