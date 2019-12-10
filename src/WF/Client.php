@@ -96,7 +96,7 @@ class Client
      */
     private function inspect(int $value): string
     {
-        $logic = in_array($value, [5, 6]);
+        $logic = in_array($value, [4, 5]);
 
         if (in_array($value, range(1, 5))) {
             $this->lang = $logic ? 'EN' : 'RU';
