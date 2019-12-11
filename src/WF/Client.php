@@ -32,6 +32,11 @@ class Client
     protected $server;
 
     /**
+     * @var string $api
+     */
+    protected $api;
+
+    /**
      * Getting data from API
      *
      * @param string $nickname
@@ -41,8 +46,10 @@ class Client
      */
     public function get(string $nickname, int $server): Client
     {
+        $this->inspect($server);
+
         $ch = curl_init(
-            $this->inspect($server) . '/user/stat?' . http_build_query([
+            $this->api . '/user/stat?' . http_build_query([
                 'name' => $nickname,
                 'server' => $this->server
             ])
@@ -70,7 +77,7 @@ class Client
 
         $let = [
             'playtime_h', 'favoritPVE', 'pve_wins', 'favoritPVP',
-            'pvp_all', 'pvp', 'rank_id', 'clan_name', 'nickname'
+            'pvp_all', 'pvp', 'rank_id', 'clan_name'
         ];
 
         foreach ($data as $key => $value) {
@@ -91,18 +98,16 @@ class Client
      * Determines and adjusts the desired server depending on the language
      *
      * @param int $value
-     * @return string
      * @throws Trash
      */
-    private function inspect(int $value): string
+    private function inspect(int $value): void
     {
-        $logic = in_array($value, [4, 5]);
-
         if (in_array($value, range(1, 5))) {
+            $logic = in_array($value, [4, 5]);
+
             $this->lang = $logic ? 'EN' : 'RU';
             $this->server = str_replace([4, 5], [1, 2], $value);
-
-            return $logic ? self::API_EN : self::API_RU;
+            $this->api = $logic ? self::API_EN : self::API_RU;
         } else throw new Trash('Incorrect server selected');
     }
 
