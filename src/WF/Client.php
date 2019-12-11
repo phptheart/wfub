@@ -65,9 +65,9 @@ class Client
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $data = curl_exec($ch);
 
-        $this->profile = json_encode(array_filter(json_decode($data, 1), function ($key) {
+        $this->profile = array_filter(json_decode($data, 1), function ($key) {
             return in_array($key, self::ALLOWABLE);
-        }, ARRAY_FILTER_USE_KEY));
+        }, ARRAY_FILTER_USE_KEY);
 
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) !== 200) {
             throw new Trash('Unable to retrieve player information', 1);
@@ -84,18 +84,14 @@ class Client
      */
     public function edit(array $data): Client
     {
-        $content = json_decode($this->profile);
-
         foreach ($data as $key => $value) {
             if ($value === false)
                 continue;
 
             if (in_array($key, self::ALLOWABLE)) {
-                $content->{$key} = $value;
+                $this->profile[$key] = $value;
             }
         }
-
-        $this->profile = json_encode($content);
 
         return $this;
     }
@@ -142,10 +138,10 @@ class Client
     /**
      * Returns the game profile data object
      *
-     * @return object
+     * @return array
      */
-    public function getPlayer(): object
+    public function getPlayer(): array
     {
-        return json_decode($this->profile);
+        return $this->profile;
     }
 }

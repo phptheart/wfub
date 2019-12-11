@@ -53,7 +53,7 @@ class Draw
 
         $this->cfg = json_decode(file_get_contents(__DIR__ . '/Data/settings.json'));
 
-        $this->player = $client->getPlayer();
+        $this->player = (object)$client->getPlayer();
         $this->player->server = $client->getServer();
 
         $this->obj = $this->cfg->{$client->getLang()};
