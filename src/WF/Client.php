@@ -17,6 +17,13 @@ class Client
     const API_RU = 'http://api.warface.ru/';
 
     /**
+     * @var array list of keys for further data filtering
+     */
+    const ALLOWABLE = [
+        'playtime_h', 'favoritPVE', 'pve_wins', 'favoritPVP', 'pvp_all', 'pvp', 'rank_id', 'clan_name', 'nickname'
+    ];
+
+    /**
      * The variable which contains json string data obtained with the help of API
      */
     protected $profile;
@@ -56,7 +63,11 @@ class Client
         );
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $this->profile = curl_exec($ch);
+        $data = curl_exec($ch);
+
+        $this->profile = json_encode(array_filter(json_decode($data, 1), function ($key) {
+            return in_array($key, self::ALLOWABLE);
+        }, ARRAY_FILTER_USE_KEY));
 
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) !== 200) {
             throw new Trash('Unable to retrieve player information', 1);
@@ -75,16 +86,11 @@ class Client
     {
         $content = json_decode($this->profile);
 
-        $let = [
-            'playtime_h', 'favoritPVE', 'pve_wins', 'favoritPVP',
-            'pvp_all', 'pvp', 'rank_id', 'clan_name'
-        ];
-
         foreach ($data as $key => $value) {
             if ($value === false)
                 continue;
 
-            if (in_array($key, $let)) {
+            if (in_array($key, self::ALLOWABLE)) {
                 $content->{$key} = $value;
             }
         }
@@ -102,13 +108,15 @@ class Client
      */
     private function inspect(int $value): void
     {
-        if (in_array($value, range(1, 5))) {
-            $logic = in_array($value, [4, 5]);
+        if (!in_array($value, range(1, 5))) {
+            throw new Trash('Incorrect server selected');
+        }
 
-            $this->lang = $logic ? 'EN' : 'RU';
-            $this->server = str_replace([4, 5], [1, 2], $value);
-            $this->api = $logic ? self::API_EN : self::API_RU;
-        } else throw new Trash('Incorrect server selected');
+        $logic = in_array($value, [4, 5]);
+
+        $this->lang = $logic ? 'EN' : 'RU';
+        $this->server = str_replace([4, 5], [1, 2], $value);
+        $this->api = $logic ? self::API_EN : self::API_RU;
     }
 
     /**
