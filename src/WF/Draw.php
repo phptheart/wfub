@@ -12,11 +12,11 @@ use ImagickPixel;
 class Draw
 {
     /**
-     * @var string containing the color Yellow
+     * @var string
      */
     const COLOR_YELLOW = '#FFE400';
     /**
-     * @var string containing the color White
+     * @var string
      */
     const COLOR_WHITE = '#FFFFFF';
 
@@ -61,8 +61,6 @@ class Draw
     }
 
     /**
-     * Initializing and rendering the final image
-     *
      * @return Imagick
      * @throws ImagickException
      */
@@ -83,8 +81,6 @@ class Draw
     }
 
     /**
-     * Rendering master data
-     *
      * @return Imagick
      */
     private function drawProfile(): Imagick
@@ -108,8 +104,6 @@ class Draw
     }
 
     /**
-     * Game statistics rendering function
-     *
      * @return Imagick
      */
     private function drawStatistics(): Imagick
@@ -134,8 +128,6 @@ class Draw
     }
 
     /**
-     * Forms an ImageDraw object to use overlays
-     *
      * @param string $color
      * @param int $size
      * @param bool $static
@@ -183,8 +175,6 @@ class Draw
     }
 
     /**
-     * Rendering of the concept type
-     *
      * @return Imagick
      * @throws ImagickException
      */
@@ -197,8 +187,6 @@ class Draw
     }
 
     /**
-     * Rank rendering
-     *
      * @return Imagick
      * @throws ImagickException
      */
@@ -211,8 +199,6 @@ class Draw
     }
 
     /**
-     * Finding the right type concept
-     *
      * @return Imagick
      * @throws ImagickException
      */
@@ -225,8 +211,6 @@ class Draw
     }
 
     /**
-     * Finding the right rank to print
-     *
      * @param int $rank
      * @return Imagick
      * @throws ImagickException

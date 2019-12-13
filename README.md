@@ -64,7 +64,7 @@ Method `addAchievements()` includes only array with keys: `badges`, `marks`, `st
    
 *View the entire [catalog of achievements](https://wfts.su/achievements) with IDs.*
     
- 
+  
 After that, an image object (Imagick) is created, which can either be displayed or written to a file.
 
 ## 5. Result

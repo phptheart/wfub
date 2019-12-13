@@ -9,5 +9,4 @@ abstract class Warface
     const CHARLIE = 3;
     const EU = 4;
     const US = 5;
-    const BR = 6;
 }

@@ -8,24 +8,24 @@ use WF\Stamp\Achievements;
 class Client
 {
     /**
-     * @var string API link in English
+     * @var string
      */
     const API_EN = 'http://api.wf.my.com/';
 
     /**
-     * @var string API link in Russian
+     * @var string
      */
     const API_RU = 'http://api.warface.ru/';
 
     /**
-     * @var array list of keys for further data filtering
+     * @var array
      */
     const ALLOWABLE = [
         'playtime_h', 'favoritPVE', 'pve_wins', 'favoritPVP', 'pvp_all', 'pvp', 'rank_id', 'clan_name', 'nickname'
     ];
 
     /**
-     * The variable which contains json string data obtained with the help of API
+     * @var $profile
      */
     protected $profile;
 
@@ -50,8 +50,6 @@ class Client
     protected $achievements = [];
 
     /**
-     * Getting data from API
-     *
      * @param string $nickname
      * @param int|null $server
      * @return Client
@@ -103,17 +101,12 @@ class Client
     }
 
     /**
-     * Allows you to edit the specific data of the game profile, further reflected on the userbar
-     *
      * @param array $data
      * @return $this
      */
     public function edit(array $data): Client
     {
         foreach ($data as $key => $value) {
-            if ($value === false)
-                continue;
-
             if (in_array($key, self::ALLOWABLE)) {
                 $this->profile[$key] = $value;
             }
@@ -123,8 +116,6 @@ class Client
     }
 
     /**
-     * Determines and adjusts the desired server depending on the language
-     *
      * @param int $value
      * @throws Trash
      */
@@ -134,16 +125,11 @@ class Client
             throw new Trash('Incorrect server selected');
         }
 
-        $logic = in_array($value, [4, 5]);
-
-        $this->lang = $logic ? 'EN' : 'RU';
         $this->server = str_replace([4, 5], [1, 2], $value);
-        $this->api = $logic ? self::API_EN : self::API_RU;
+        [$this->lang, $this->api] = in_array($value, [4, 5]) ? ['EN', self::API_EN] : ['RU', self::API_RU];
     }
 
     /**
-     * Returns a string with the selected language
-     *
      * @return string
      */
     public function getLang(): string
@@ -152,8 +138,6 @@ class Client
     }
 
     /**
-     * Returns the ID of the received server
-     *
      * @return int
      */
     public function getServer(): int
@@ -162,8 +146,6 @@ class Client
     }
 
     /**
-     * Returns the game profile data object
-     *
      * @return array
      */
     public function getPlayer(): array
