@@ -55,6 +55,7 @@ class Draw
 
         $this->player = (object)$client->getPlayer();
         $this->player->server = $client->getServer();
+        $this->player->achievements = (object)$client->getListAchievements();
 
         $this->obj = $this->cfg->{$client->getLang()};
     }
@@ -70,6 +71,7 @@ class Draw
         $this->img = new Imagick();
         $this->img->readImageBlob(base64_decode($this->cfg->images->backdrop));
 
+        $this->drawAchievements();
         $this->drawRank();
         $this->drawType();
         $this->drawProfile();
@@ -148,6 +150,36 @@ class Draw
         $draw->setFontSize($size);
 
         return $draw;
+    }
+
+    /**
+     * @throws ImagickException
+     */
+    private function drawAchievements()
+    {
+        if (isset($this->player->achievements->strip)) {
+            $strip = new Imagick();
+            $strip->readImage($this->player->achievements->strip);
+            $strip->thumbnailImage(256, 64, 1);
+
+            $this->img->compositeImage($strip, Imagick::COMPOSITE_DEFAULT, 29, 1);
+        }
+
+        if (isset($this->player->achievements->badge)) {
+            $badge = new Imagick();
+            $badge->readImage($this->player->achievements->badge);
+            $badge->thumbnailImage(64, 64, 1);
+
+            $this->img->compositeImage($badge, Imagick::COMPOSITE_DEFAULT, 0, 0);
+        }
+
+        if (isset($this->player->achievements->mark)) {
+            $mark = new Imagick();
+            $mark->readImage($this->player->achievements->mark);
+            $mark->thumbnailImage(64, 64, 1);
+
+            $this->img->compositeImage($mark, Imagick::COMPOSITE_DEFAULT, 0, 0);
+        }
     }
 
     /**

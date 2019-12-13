@@ -3,6 +3,7 @@
 namespace WF;
 
 use WF\Exception\Trash;
+use WF\Stamp\Achievements;
 
 class Client
 {
@@ -44,6 +45,11 @@ class Client
     protected $api;
 
     /**
+     * @var array $achievements
+     */
+    protected $achievements = [];
+
+    /**
      * Getting data from API
      *
      * @param string $nickname
@@ -74,6 +80,26 @@ class Client
         }, ARRAY_FILTER_USE_KEY);
 
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return $this
+     * @throws Trash
+     */
+    public function addAchievements(array $data): Client
+    {
+        $this->achievements = (new Achievements($data))->getList();
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getListAchievements(): array
+    {
+        return $this->achievements;
     }
 
     /**
