@@ -12,7 +12,7 @@ class Parallel
      * @param array $data
      * @throws Trash
      */
-    public function __construct($urls, $data = [])
+    public function __construct(array $urls, array $data)
     {
         $mh = curl_multi_init();
 
