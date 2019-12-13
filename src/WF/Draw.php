@@ -75,55 +75,6 @@ class Draw
         $this->drawProfile();
         $this->drawStatistics();
 
-        $this->img->setImageFormat('png');
-
-        return $this->img;
-    }
-
-    /**
-     * @return Imagick
-     */
-    private function drawProfile(): Imagick
-    {
-        $offset = 0;
-
-        if (isset($this->player->clan_name)) {
-            $objClan = $this->stamp(self::COLOR_YELLOW, 12);
-            $this->img->annotateImage($objClan, 102, 23, 0, $this->player->clan_name);
-
-            $offset = 5;
-        }
-
-        $objNick = $this->stamp(self::COLOR_WHITE, 14);
-        $this->img->annotateImage($objNick, 102, 32 + $offset, 0, $this->player->nickname);
-
-        $objServer = $this->stamp(self::COLOR_WHITE, 12);
-        $this->img->annotateImage($objServer, 102, 45 + $offset, 0, $this->obj->server . $this->obj->data->{$this->player->server});
-
-        return $this->img;
-    }
-
-    /**
-     * @return Imagick
-     */
-    private function drawStatistics(): Imagick
-    {
-        $data = [
-            ($this->player->playtime_h ?? 0) . $this->obj->hours,
-            $this->player->favoritPVE ? $this->obj->grade->{$this->player->favoritPVE} : $this->obj->not,
-            $this->player->pve_wins ?? 0,
-            $this->player->favoritPVP ? $this->obj->grade->{$this->player->favoritPVP} : $this->obj->not,
-            $this->player->pvp_all ?? 0,
-            $this->player->pvp ?? 0
-        ];
-
-        $object = $this->stamp(self::COLOR_YELLOW, 5, true);
-        $static = 12;
-
-        foreach ($data as $value) {
-            $this->img->annotateImage($object, 317, $static += 7, 0, $value);
-        }
-
         return $this->img;
     }
 
@@ -147,7 +98,7 @@ class Draw
     /**
      * @throws ImagickException
      */
-    private function drawAchievements()
+    private function drawAchievements(): void
     {
         if (isset($this->player->achievements->strip)) {
             $strip = new Imagick();
@@ -174,28 +125,59 @@ class Draw
         }
     }
 
-    /**
-     * @return Imagick
-     * @throws ImagickException
-     */
-    private function drawType(): Imagick
+    private function drawProfile(): void
     {
-        $object = $this->makeType();
-        $this->img->compositeImage($object, Imagick::COMPOSITE_DEFAULT, 297, 14);
+        $offset = 0;
 
-        return $this->img;
+        if (isset($this->player->clan_name)) {
+            $clan = $this->stamp(self::COLOR_YELLOW, 12);
+            $this->img->annotateImage($clan, 102, 23, 0, $this->player->clan_name);
+
+            $offset = 5;
+        }
+
+        $nick = $this->stamp(self::COLOR_WHITE, 14);
+        $this->img->annotateImage($nick, 102, 32 + $offset, 0, $this->player->nickname);
+
+        $server = $this->stamp(self::COLOR_WHITE, 12);
+        $this->img->annotateImage($server, 102, 45 + $offset, 0, $this->obj->server . $this->obj->data->{$this->player->server});
+    }
+
+    private function drawStatistics(): void
+    {
+        $data = [
+            ($this->player->playtime_h ?? 0) . $this->obj->hours,
+            $this->player->favoritPVE ? $this->obj->grade->{$this->player->favoritPVE} : $this->obj->not,
+            $this->player->pve_wins ?? 0,
+            $this->player->favoritPVP ? $this->obj->grade->{$this->player->favoritPVP} : $this->obj->not,
+            $this->player->pvp_all ?? 0,
+            $this->player->pvp ?? 0
+        ];
+
+        $object = $this->stamp(self::COLOR_YELLOW, 5, true);
+        $static = 12;
+
+        foreach ($data as $value) {
+            $this->img->annotateImage($object, 317, $static += 7, 0, $value);
+        }
     }
 
     /**
-     * @return Imagick
      * @throws ImagickException
      */
-    private function drawRank(): Imagick
+    private function drawType(): void
+    {
+        $object = $this->makeType();
+        $this->img->compositeImage($object, Imagick::COMPOSITE_DEFAULT, 297, 14);
+    }
+
+    /**
+     * @throws ImagickException
+     */
+    private function drawRank(): void
     {
         $object = $this->makeRank($this->player->rank_id);
         $this->img->compositeImage($object, Imagick::COMPOSITE_DEFAULT, 64, 18);
-
-        return $this->img;
     }
 
     /**

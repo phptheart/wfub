@@ -51,7 +51,7 @@ class Client
 
     /**
      * @param string $nickname
-     * @param int|null $server
+     * @param int $server
      * @return Client
      * @throws Trash
      */
