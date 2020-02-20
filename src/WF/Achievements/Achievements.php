@@ -10,7 +10,7 @@ class Achievements
     /**
      * Catalog of achievements on the site
      */
-    const HOST = 'https://wnull.lh1.in//wf_achievements/';
+    const HOST = 'https://wfts.su/wf_achievements/';
 
     /**
      * @var object $marks
