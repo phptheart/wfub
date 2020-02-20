@@ -13,7 +13,7 @@ Simple and free library to generate userbars game Warface.
 This generator can be installed using Composer by running the following command:
 
 ```sh
-composer require wnull/userbars-warface-generator:dev-master
+composer require wnull/userbars-warface-generator
 ```
 
 ## 3. Initialization
