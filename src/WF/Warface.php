@@ -2,7 +2,7 @@
 
 namespace WF\Enums;
 
-abstract class Warface
+class Warface
 {
     const ALPHA = 1;
     const BRAVO = 2;
